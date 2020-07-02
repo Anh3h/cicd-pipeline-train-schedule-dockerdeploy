@@ -28,8 +28,14 @@ pipeline {
                 }
             }
         }
+        stage('Proceed deploy to production') {
+            steps {
+                input 'Do you want to proceed with the deployment to production?'
+            }
+        }
         stage('Deploy to production') {
             steps {
+                milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     script {
                         sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull anh3h/train-schedule:${env.BUILD_NUMBER}\""
