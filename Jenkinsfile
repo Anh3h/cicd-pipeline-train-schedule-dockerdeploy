@@ -38,14 +38,14 @@ pipeline {
                 milestone(1)
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]){
                     script {
-                        sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull anh3h/train-schedule:${env.BUILD_NUMBER}\""
+                        sh "sshpass -p $PASSWORD -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull anh3h/train-schedule:${env.BUILD_NUMBER}\""
                         try {
-                            sh "sshpass -p '$PASSWORD' -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
-                            sh "sshpass -p '$PASSWORD' -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
+                            sh "sshpass -p $PASSWORD -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
+                            sh "sshpass -p $PASSWORD -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
                         } catch (err) {
                             echo 'Caught error: $err'
                         }
-                        sh "sshpass -p '$PASSWORD' -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d anh3h/train-schedule:${env.BUILD_NUMBER}\""
+                        sh "sshpass -p $PASSWORD -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker run --restart always --name train-schedule -p 8080:8080 -d anh3h/train-schedule:${env.BUILD_NUMBER}\""
                     }
                 }
             }
