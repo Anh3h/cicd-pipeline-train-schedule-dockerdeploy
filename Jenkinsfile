@@ -35,7 +35,7 @@ pipeline {
                         sh "sshpass -p '$PASSWORD' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker pull anh3h/train-schedule:${env.BUILD_NUMBER}\""
                         try {
                             sh "sshpass -p '$PASSWORD' -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker stop train-schedule\""
-                            ssh "sshpass -p '$PASSWORD' -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
+                            sh "sshpass -p '$PASSWORD' -V ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"docker rm train-schedule\""
                         } catch (err) {
                             echo 'Caught error: $err'
                         }
